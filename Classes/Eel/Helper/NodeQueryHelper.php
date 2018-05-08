@@ -8,7 +8,7 @@
 
 namespace CRON\CRLib\Eel\Helper;
 
-use TYPO3\Eel\ProtectedContextAwareInterface;
+use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\QueryInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
