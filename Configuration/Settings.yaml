@@ -1,5 +1,5 @@
-TYPO3:
-  TypoScript:
-    defaultContext:
-      'CRLib': 'CRON\CRLib\Eel\Helper\NodeQueryHelper'
 
+Neos:
+  Fusion:
+    defaultContext:
+      CRLib: CRON\CRLib\Eel\Helper\NodeQueryHelper
