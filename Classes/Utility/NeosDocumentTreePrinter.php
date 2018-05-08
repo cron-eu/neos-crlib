@@ -49,7 +49,7 @@ class NeosDocumentTreePrinter
 
 //        \Neos\Flow\var_dump($document);
         if ($currentDepth < $this->maxDepth) {
-            $childDocuments = $document->getChildNodes('TYPO3.Neos:Document');
+            $childDocuments = $document->getChildNodes('Neos.Neos:Document');
             foreach ($childDocuments as $childDocument) {
                 $this->printDocument($childDocument, $currentDepth + 1, $urlPathPrefix);
             }
@@ -80,7 +80,7 @@ class NeosDocumentTreePrinter
         ];
 
         if ($currentDepth < $this->maxDepth) {
-            $childDocuments = $document->getChildNodes('TYPO3.Neos:Document');
+            $childDocuments = $document->getChildNodes('Neos.Neos:Document');
             foreach ($childDocuments as $childDocument) {
                 $this->buildDocumentTreeRecursive($childDocument, $currentDepth + 1, $urlPathPrefix);
             }

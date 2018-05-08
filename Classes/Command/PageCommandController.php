@@ -14,8 +14,8 @@ use /** @noinspection PhpUnusedAliasInspection */
     Neos\Flow\Annotations as Flow;
 
 use Neos\Flow\Cli\CommandController;
-use TYPO3\Neos\Domain\Model\Site;
-use TYPO3\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Domain\Model\Site;
+use Neos\Neos\Domain\Service\ContentContext;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Model\Workspace;
 
@@ -48,7 +48,7 @@ class PageCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Neos\Domain\Repository\SiteRepository
+     * @var \Neos\Neos\Domain\Repository\SiteRepository
      */
     protected $siteRepository;
 
@@ -236,7 +236,7 @@ class PageCommandController extends CommandController
      * @throws \Exception
      */
     private function getChildDocumentByURIPathSegment(NodeInterface $document, $pathSegment) {
-        $found = array_filter($document->getChildNodes('TYPO3.Neos:Document'),
+        $found = array_filter($document->getChildNodes('Neos.Neos:Document'),
             function (NodeInterface $document) use ($pathSegment ){
                 return $document->getProperty('uriPathSegment') === $pathSegment;
             }

@@ -16,7 +16,7 @@ use Doctrine\ORM\Query;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Media\Domain\Model\Asset;
-use TYPO3\Neos\Domain\Model\Site;
+use Neos\Neos\Domain\Model\Site;
 use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
 use TYPO3\TYPO3CR\Domain\Model\NodeData;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
@@ -60,7 +60,7 @@ class NodeCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Neos\Domain\Repository\SiteRepository
+     * @var \Neos\Neos\Domain\Repository\SiteRepository
      */
     protected $siteRepository;
 
@@ -266,7 +266,7 @@ class NodeCommandController extends CommandController
             $nodeType = $data['nodeType'];
             if ($this->nodeTypeManager->hasNodeType($nodeType)) {
                 $nodeType = $this->nodeTypeManager->getNodeType($nodeType);
-                if ($nodeType->isOfType('TYPO3.Neos:Document')) {
+                if ($nodeType->isOfType('Neos.Neos:Document')) {
                     $documentCount++;
                 }
             } else {
@@ -356,7 +356,7 @@ class NodeCommandController extends CommandController
      *
      * @param string $uuid Search by UUID (can be an UUID prefix)
      * @param string $path Match by path prefix (can be abs. or relative to the site root)
-     * @param string $type NodeType filter (csv list, e.g. TYPO3.Neos:Document)
+     * @param string $type NodeType filter (csv list, e.g. Neos.Neos:Document)
      * @param bool $useSubtypes Also include inherited NodeTypes (default)
      * @param string $search Search string for exact match or regex like e.g. '/^myprefix/i'
      * @param string $property Limit the matching to this property (if unset search in the full JSON blob with LIKE
@@ -455,12 +455,12 @@ class NodeCommandController extends CommandController
      * To list all available nodes and not apply the NodeType filter, use "null" as the type parameter.
      *
      * @param string $path relative to the site root. Defaults to /
-     * @param string $type node type filter, e.g. 'CRON.DazSite:*', defaults to TYPO3.Neos:Document.
+     * @param string $type node type filter, e.g. 'CRON.DazSite:*', defaults to Neos.Neos:Document.
      * @param int $depth recursion depth, defaults to 0
      *
      * @return void
      */
-    public function listCommand($path = '/', $type = 'TYPO3.Neos:Document', $depth = 0)
+    public function listCommand($path = '/', $type = 'Neos.Neos:Document', $depth = 0)
     {
         $path = $this->getPath($path);
         $this->listNodes($path, $type, $depth);
@@ -590,7 +590,7 @@ class NodeCommandController extends CommandController
             $path .= '/';
         } // hack
 
-        $documentNodesToDelete = new NodeQuery($this->getTypes('TYPO3.Neos:Document'), $path);
+        $documentNodesToDelete = new NodeQuery($this->getTypes('Neos.Neos:Document'), $path);
 
         if ((($count = $documentNodesToDelete->getCount()) > 0) && !$force) {
             foreach ($documentNodesToDelete->getQuery()->iterate(null, Query::HYDRATE_SCALAR) as $result) {
