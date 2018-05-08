@@ -11,7 +11,7 @@ namespace CRON\CRLib\Utility;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Utility\Unicode\Functions as Unicode;
+use Neos\Utility\Unicode\Functions as Unicode;
 
 /**
  * @property mixed|null initialTypeConstraint
