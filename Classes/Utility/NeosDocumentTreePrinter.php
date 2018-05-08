@@ -8,7 +8,7 @@
 
 namespace CRON\CRLib\Utility;
 
-use TYPO3\Flow\Cli\ConsoleOutput;
+use Neos\Flow\Cli\ConsoleOutput;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 /**
@@ -47,7 +47,7 @@ class NeosDocumentTreePrinter
             $this->trimPath($document->getPath()),
         ], $currentDepth * 0);
 
-//        \TYPO3\Flow\var_dump($document);
+//        \Neos\Flow\var_dump($document);
         if ($currentDepth < $this->maxDepth) {
             $childDocuments = $document->getChildNodes('TYPO3.Neos:Document');
             foreach ($childDocuments as $childDocument) {

@@ -11,9 +11,9 @@ namespace CRON\CRLib\Command;
 use CRON\CRLib\Utility\NeosDocumentTreePrinter;
 use CRON\CRLib\Utility\NeosDocumentWalker;
 use /** @noinspection PhpUnusedAliasInspection */
-    TYPO3\Flow\Annotations as Flow;
+    Neos\Flow\Annotations as Flow;
 
-use TYPO3\Flow\Cli\CommandController;
+use Neos\Flow\Cli\CommandController;
 use TYPO3\Neos\Domain\Model\Site;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
@@ -150,7 +150,7 @@ class PageCommandController extends CommandController
      * @param string $url use the URL instead of o path
      * @param int $limit limit
      *
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      */
     public function removeCommand($user = 'admin', $path = '', $url = '', $limit = 0)
     {
@@ -181,7 +181,7 @@ class PageCommandController extends CommandController
             $this->quit(count($nodesToDelete) > 0 ? 0 : 1);
 
         } catch (\Exception $e) {
-            if ($e instanceof \TYPO3\Flow\Mvc\Exception\StopActionException) { return; }
+            if ($e instanceof \Neos\Flow\Mvc\Exception\StopActionException) { return; }
             $this->outputLine('ERROR: %s', [$e->getMessage()]);
             $this->quit(1);
         }
@@ -192,7 +192,7 @@ class PageCommandController extends CommandController
      *
      * @param string $user use this user's workspace
      *
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      */
     public function publishCommand($user = 'admin')
     {

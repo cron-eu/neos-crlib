@@ -10,8 +10,8 @@ namespace CRON\CRLib\Utility;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Utility\Unicode\Functions as Unicode;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Utility\Unicode\Functions as Unicode;
 
 /**
  * @property mixed|null initialTypeConstraint

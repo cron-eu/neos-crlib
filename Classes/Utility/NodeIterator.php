@@ -8,7 +8,7 @@
 namespace CRON\CRLib\Utility;
 
 use Doctrine\ORM\Query;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeData;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\Context;
@@ -40,7 +40,7 @@ class NodeIterator implements \Iterator
      * Inject PersistenceManagerInterface
      *
      * @Flow\Inject
-     * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+     * @var \Neos\Flow\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
 

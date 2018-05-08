@@ -13,8 +13,8 @@ use CRON\CRLib\Utility\NodeQuery;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use TYPO3\Media\Domain\Model\Asset;
 use TYPO3\Neos\Domain\Model\Site;
 use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
@@ -23,7 +23,7 @@ use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\Context;
 use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
-use TYPO3\Flow\Cli\CommandController;
+use Neos\Flow\Cli\CommandController;
 use TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation;
 
 /**
@@ -196,7 +196,7 @@ class NodeCommandController extends CommandController
      * @param bool $yes Skip the confirmation step prior to the import process
      *
      * @throws \Exception
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \TYPO3\TYPO3CR\Exception\NodeTypeNotFoundException
      */
     public function importCommand(
@@ -530,7 +530,7 @@ class NodeCommandController extends CommandController
     /**
      * @param NodeInterface[] $nodes nodes to delete
      *
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      *
      */
     private function removeAll($nodes)

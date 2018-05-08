@@ -9,8 +9,8 @@
 namespace CRON\CRLib\Eel\Helper;
 
 use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\QueryInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\QueryInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 class NodeQueryHelper implements ProtectedContextAwareInterface
@@ -23,7 +23,7 @@ class NodeQueryHelper implements ProtectedContextAwareInterface
     protected $nodeDataRepository;
 
     /**
-     * @var \TYPO3\Flow\Persistence\QueryInterface
+     * @var \Neos\Flow\Persistence\QueryInterface
      */
     protected $query;
 
