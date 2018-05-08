@@ -16,9 +16,9 @@ use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
 use Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType;
 use Neos\Flow\Annotations as Flow;
 use Neos\Media\Domain\Model\ImageVariant;
-use TYPO3\TYPO3CR\Domain\Service\ImportExport\ImportExportPropertyMappingConfiguration;
+use Neos\ContentRepository\Domain\Service\ImportExport\ImportExportPropertyMappingConfiguration;
 use Neos\Flow\Utility\Algorithms;
-use TYPO3\TYPO3CR\Utility;
+use Neos\ContentRepository\Utility;
 
 /**
  *
@@ -58,19 +58,19 @@ class NodeImportExportService
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\NodeTypeManager
+     * @var \Neos\ContentRepository\Domain\Service\NodeTypeManager
      */
     protected $nodeTypeManager;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Repository\NodeDataRepository
+     * @var \Neos\ContentRepository\Domain\Repository\NodeDataRepository
      */
     protected $nodeDataRepository;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface
+     * @var \Neos\ContentRepository\Domain\Service\ContextFactoryInterface
      */
     protected $contextFactory;
 

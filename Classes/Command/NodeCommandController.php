@@ -17,14 +17,14 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Media\Domain\Model\Asset;
 use Neos\Neos\Domain\Model\Site;
-use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
-use TYPO3\TYPO3CR\Domain\Model\NodeData;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Service\Context;
-use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
-use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\Command\NodeCommandControllerPlugin;
+use Neos\ContentRepository\Domain\Model\NodeData;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\Context;
+use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Flow\Cli\CommandController;
-use TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation;
+use Neos\ContentRepository\Migration\Transformations\AbstractTransformation;
 
 /**
  * @property Context context
@@ -48,13 +48,13 @@ class NodeCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Repository\NodeDataRepository
+     * @var \Neos\ContentRepository\Domain\Repository\NodeDataRepository
      */
     protected $nodeDataRepository;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface
+     * @var \Neos\ContentRepository\Domain\Service\ContextFactoryInterface
      */
     protected $contextFactory;
 
@@ -197,7 +197,7 @@ class NodeCommandController extends CommandController
      *
      * @throws \Exception
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
-     * @throws \TYPO3\TYPO3CR\Exception\NodeTypeNotFoundException
+     * @throws \Neos\ContentRepository\Exception\NodeTypeNotFoundException
      */
     public function importCommand(
         $filename,
@@ -667,7 +667,7 @@ class NodeCommandController extends CommandController
     public function repairCommand($nodeType = '', $dryRun = false, $cleanup = false)
     {
         /** @var NodeCommandControllerPlugin $plugin */
-        $plugin = $this->objectManager->get('TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin');
+        $plugin = $this->objectManager->get('Neos\ContentRepository\Command\NodeCommandControllerPlugin');
         $plugin->invokeSubCommand('repair', $this->output,
             $nodeType ? $this->nodeTypeManager->getNodeType($nodeType) : null,
             'live', $dryRun, $cleanup);
@@ -810,7 +810,7 @@ class NodeCommandController extends CommandController
         $migration = $this->objectManager->get($class);
 
         if (!$migration instanceof AbstractTransformation) {
-            $this->outputLine('ERROR: PHP-Class %s must be an instance of \TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation.',
+            $this->outputLine('ERROR: PHP-Class %s must be an instance of \Neos\ContentRepository\Migration\Transformations\AbstractTransformation.',
                 [$class]);
             $this->quit(1);
         }

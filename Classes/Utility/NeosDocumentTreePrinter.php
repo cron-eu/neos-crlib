@@ -9,7 +9,7 @@
 namespace CRON\CRLib\Utility;
 
 use Neos\Flow\Cli\ConsoleOutput;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @property int maxDepth
@@ -33,7 +33,7 @@ class NeosDocumentTreePrinter
      *
      * @param array $currentURLPathPrefix
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     private function printDocument(NodeInterface $document, $currentDepth = 0, array $currentURLPathPrefix = [])
     {
@@ -65,7 +65,7 @@ class NeosDocumentTreePrinter
      *
      * @param array $currentURLPathPrefix
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     private function buildDocumentTreeRecursive(NodeInterface $document, $currentDepth = 0, array $currentURLPathPrefix = [])
     {
@@ -93,7 +93,7 @@ class NeosDocumentTreePrinter
      *
      * @param bool $asTable
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     public function printTree(ConsoleOutput $output, $asTable = true)
     {

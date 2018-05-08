@@ -8,7 +8,7 @@
 
 namespace CRON\CRLib\Utility;
 
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @property int limit
