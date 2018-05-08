@@ -15,7 +15,7 @@ use Doctrine\ORM\Proxy\Proxy;
 use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
 use Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType;
 use Neos\Flow\Annotations as Flow;
-use TYPO3\Media\Domain\Model\ImageVariant;
+use Neos\Media\Domain\Model\ImageVariant;
 use TYPO3\TYPO3CR\Domain\Service\ImportExport\ImportExportPropertyMappingConfiguration;
 use Neos\Flow\Utility\Algorithms;
 use TYPO3\TYPO3CR\Utility;

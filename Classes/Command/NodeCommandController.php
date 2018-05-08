@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Media\Domain\Model\Asset;
+use Neos\Media\Domain\Model\Asset;
 use TYPO3\Neos\Domain\Model\Site;
 use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
 use TYPO3\TYPO3CR\Domain\Model\NodeData;
