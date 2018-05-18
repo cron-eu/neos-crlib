@@ -8,7 +8,7 @@
 
 namespace CRON\CRLib\Utility;
 
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @property int limit
@@ -24,7 +24,7 @@ class NeosDocumentWalker
 
     private function walk(NodeInterface $node) {
 
-        foreach ($node->getChildNodes('TYPO3.Neos:Document') as $childNode) {
+        foreach ($node->getChildNodes('Neos.Neos:Document') as $childNode) {
             if ($this->limit && count($this->nodes) >= $this->limit) {
                 return;
             }

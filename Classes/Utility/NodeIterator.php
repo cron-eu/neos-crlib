@@ -8,10 +8,10 @@
 namespace CRON\CRLib\Utility;
 
 use Doctrine\ORM\Query;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\NodeData;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Service\Context;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Model\NodeData;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\Context;
 
 /**
  * @property Context context
@@ -26,13 +26,13 @@ class NodeIterator implements \Iterator
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Factory\NodeFactory
+     * @var \Neos\ContentRepository\Domain\Factory\NodeFactory
      */
     protected $nodeFactory;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface
+     * @var \Neos\ContentRepository\Domain\Service\ContextFactoryInterface
      */
     protected $contextFactory;
 
@@ -40,13 +40,13 @@ class NodeIterator implements \Iterator
      * Inject PersistenceManagerInterface
      *
      * @Flow\Inject
-     * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+     * @var \Neos\Flow\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Repository\NodeDataRepository
+     * @var \Neos\ContentRepository\Domain\Repository\NodeDataRepository
      */
     protected $nodeDataRepository;
 
@@ -99,8 +99,8 @@ class NodeIterator implements \Iterator
     /**
      * @param NodeData $nodeData
      *
-     * @return \TYPO3\TYPO3CR\Domain\Model\NodeInterface
-     * @throws \TYPO3\TYPO3CR\Exception\NodeConfigurationException
+     * @return \Neos\ContentRepository\Domain\Model\NodeInterface
+     * @throws \Neos\ContentRepository\Exception\NodeConfigurationException
      */
     private function getNode(NodeData $nodeData)
     {

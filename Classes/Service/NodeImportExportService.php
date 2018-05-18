@@ -12,13 +12,13 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Proxy\Proxy;
-use TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface;
-use TYPO3\Flow\Persistence\Doctrine\DataTypes\JsonArrayType;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Media\Domain\Model\ImageVariant;
-use TYPO3\TYPO3CR\Domain\Service\ImportExport\ImportExportPropertyMappingConfiguration;
-use TYPO3\Flow\Utility\Algorithms;
-use TYPO3\TYPO3CR\Utility;
+use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
+use Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType;
+use Neos\Flow\Annotations as Flow;
+use Neos\Media\Domain\Model\ImageVariant;
+use Neos\ContentRepository\Domain\Service\ImportExport\ImportExportPropertyMappingConfiguration;
+use Neos\Flow\Utility\Algorithms;
+use Neos\ContentRepository\Utility;
 
 /**
  *
@@ -34,19 +34,19 @@ class NodeImportExportService
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\Object\ObjectManagerInterface
+     * @var \Neos\Flow\ObjectManagement\ObjectManagerInterface
      */
     protected $objectManager;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+     * @var \Neos\Flow\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\Property\PropertyMapper
+     * @var \Neos\Flow\Property\PropertyMapper
      */
     protected $propertyMapper;
 
@@ -58,19 +58,19 @@ class NodeImportExportService
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\NodeTypeManager
+     * @var \Neos\ContentRepository\Domain\Service\NodeTypeManager
      */
     protected $nodeTypeManager;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Repository\NodeDataRepository
+     * @var \Neos\ContentRepository\Domain\Repository\NodeDataRepository
      */
     protected $nodeDataRepository;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface
+     * @var \Neos\ContentRepository\Domain\Service\ContextFactoryInterface
      */
     protected $contextFactory;
 
@@ -184,8 +184,8 @@ class NodeImportExportService
      *
      * @return array
      * @throws \Exception
-     * @throws \TYPO3\Flow\Property\Exception
-     * @throws \TYPO3\Flow\Security\Exception
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
      *
      * @return array processed data
      */
@@ -227,8 +227,8 @@ class NodeImportExportService
      * @param array $nodeData input data
      *
      * @throws \Exception
-     * @throws \TYPO3\Flow\Property\Exception
-     * @throws \TYPO3\Flow\Security\Exception
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
      *
      * @return array processed node data
      */
@@ -278,8 +278,8 @@ class NodeImportExportService
      * @return array
      *
      * @throws \Exception
-     * @throws \TYPO3\Flow\Property\Exception
-     * @throws \TYPO3\Flow\Security\Exception
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
      */
     public function convertPropertiesToArray($originalProperties)
     {

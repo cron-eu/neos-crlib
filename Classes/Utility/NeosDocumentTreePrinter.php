@@ -8,8 +8,8 @@
 
 namespace CRON\CRLib\Utility;
 
-use TYPO3\Flow\Cli\ConsoleOutput;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\Flow\Cli\ConsoleOutput;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @property int maxDepth
@@ -33,7 +33,7 @@ class NeosDocumentTreePrinter
      *
      * @param array $currentURLPathPrefix
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     private function printDocument(NodeInterface $document, $currentDepth = 0, array $currentURLPathPrefix = [])
     {
@@ -47,9 +47,9 @@ class NeosDocumentTreePrinter
             $this->trimPath($document->getPath()),
         ], $currentDepth * 0);
 
-//        \TYPO3\Flow\var_dump($document);
+//        \Neos\Flow\var_dump($document);
         if ($currentDepth < $this->maxDepth) {
-            $childDocuments = $document->getChildNodes('TYPO3.Neos:Document');
+            $childDocuments = $document->getChildNodes('Neos.Neos:Document');
             foreach ($childDocuments as $childDocument) {
                 $this->printDocument($childDocument, $currentDepth + 1, $urlPathPrefix);
             }
@@ -65,7 +65,7 @@ class NeosDocumentTreePrinter
      *
      * @param array $currentURLPathPrefix
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     private function buildDocumentTreeRecursive(NodeInterface $document, $currentDepth = 0, array $currentURLPathPrefix = [])
     {
@@ -80,7 +80,7 @@ class NeosDocumentTreePrinter
         ];
 
         if ($currentDepth < $this->maxDepth) {
-            $childDocuments = $document->getChildNodes('TYPO3.Neos:Document');
+            $childDocuments = $document->getChildNodes('Neos.Neos:Document');
             foreach ($childDocuments as $childDocument) {
                 $this->buildDocumentTreeRecursive($childDocument, $currentDepth + 1, $urlPathPrefix);
             }
@@ -93,7 +93,7 @@ class NeosDocumentTreePrinter
      *
      * @param bool $asTable
      *
-     * @throws \TYPO3\TYPO3CR\Exception\NodeException
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     public function printTree(ConsoleOutput $output, $asTable = true)
     {

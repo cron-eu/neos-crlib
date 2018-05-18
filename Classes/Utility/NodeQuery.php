@@ -10,8 +10,8 @@ namespace CRON\CRLib\Utility;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Utility\Unicode\Functions as Unicode;
+use Neos\Flow\Annotations as Flow;
+use Neos\Utility\Unicode\Functions as Unicode;
 
 /**
  * @property mixed|null initialTypeConstraint
@@ -57,7 +57,7 @@ class NodeQuery
         $em = $this->entityManager;
         $this->queryBuilder = $em->createQueryBuilder();
         $this->queryBuilder->select('n')
-                           ->from('TYPO3\TYPO3CR\Domain\Model\NodeData', 'n');
+                           ->from('Neos\ContentRepository\Domain\Model\NodeData', 'n');
 
         if (!empty($this->workspace)) {
             $this->queryBuilder

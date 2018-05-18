@@ -13,18 +13,18 @@ use CRON\CRLib\Utility\NodeQuery;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Media\Domain\Model\Asset;
-use TYPO3\Neos\Domain\Model\Site;
-use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
-use TYPO3\TYPO3CR\Domain\Model\NodeData;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Service\Context;
-use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
-use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
-use TYPO3\Flow\Cli\CommandController;
-use TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Media\Domain\Model\Asset;
+use Neos\Neos\Domain\Model\Site;
+use Neos\ContentRepository\Command\NodeCommandControllerPlugin;
+use Neos\ContentRepository\Domain\Model\NodeData;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\Context;
+use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\Flow\Cli\CommandController;
+use Neos\ContentRepository\Migration\Transformations\AbstractTransformation;
 
 /**
  * @property Context context
@@ -48,19 +48,19 @@ class NodeCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Repository\NodeDataRepository
+     * @var \Neos\ContentRepository\Domain\Repository\NodeDataRepository
      */
     protected $nodeDataRepository;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface
+     * @var \Neos\ContentRepository\Domain\Service\ContextFactoryInterface
      */
     protected $contextFactory;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Neos\Domain\Repository\SiteRepository
+     * @var \Neos\Neos\Domain\Repository\SiteRepository
      */
     protected $siteRepository;
 
@@ -196,8 +196,8 @@ class NodeCommandController extends CommandController
      * @param bool $yes Skip the confirmation step prior to the import process
      *
      * @throws \Exception
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
-     * @throws \TYPO3\TYPO3CR\Exception\NodeTypeNotFoundException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\ContentRepository\Exception\NodeTypeNotFoundException
      */
     public function importCommand(
         $filename,
@@ -266,7 +266,7 @@ class NodeCommandController extends CommandController
             $nodeType = $data['nodeType'];
             if ($this->nodeTypeManager->hasNodeType($nodeType)) {
                 $nodeType = $this->nodeTypeManager->getNodeType($nodeType);
-                if ($nodeType->isOfType('TYPO3.Neos:Document')) {
+                if ($nodeType->isOfType('Neos.Neos:Document')) {
                     $documentCount++;
                 }
             } else {
@@ -356,7 +356,7 @@ class NodeCommandController extends CommandController
      *
      * @param string $uuid Search by UUID (can be an UUID prefix)
      * @param string $path Match by path prefix (can be abs. or relative to the site root)
-     * @param string $type NodeType filter (csv list, e.g. TYPO3.Neos:Document)
+     * @param string $type NodeType filter (csv list, e.g. Neos.Neos:Document)
      * @param bool $useSubtypes Also include inherited NodeTypes (default)
      * @param string $search Search string for exact match or regex like e.g. '/^myprefix/i'
      * @param string $property Limit the matching to this property (if unset search in the full JSON blob with LIKE
@@ -455,12 +455,12 @@ class NodeCommandController extends CommandController
      * To list all available nodes and not apply the NodeType filter, use "null" as the type parameter.
      *
      * @param string $path relative to the site root. Defaults to /
-     * @param string $type node type filter, e.g. 'CRON.DazSite:*', defaults to TYPO3.Neos:Document.
+     * @param string $type node type filter, e.g. 'CRON.DazSite:*', defaults to Neos.Neos:Document.
      * @param int $depth recursion depth, defaults to 0
      *
      * @return void
      */
-    public function listCommand($path = '/', $type = 'TYPO3.Neos:Document', $depth = 0)
+    public function listCommand($path = '/', $type = 'Neos.Neos:Document', $depth = 0)
     {
         $path = $this->getPath($path);
         $this->listNodes($path, $type, $depth);
@@ -530,7 +530,7 @@ class NodeCommandController extends CommandController
     /**
      * @param NodeInterface[] $nodes nodes to delete
      *
-     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      *
      */
     private function removeAll($nodes)
@@ -590,7 +590,7 @@ class NodeCommandController extends CommandController
             $path .= '/';
         } // hack
 
-        $documentNodesToDelete = new NodeQuery($this->getTypes('TYPO3.Neos:Document'), $path);
+        $documentNodesToDelete = new NodeQuery($this->getTypes('Neos.Neos:Document'), $path);
 
         if ((($count = $documentNodesToDelete->getCount()) > 0) && !$force) {
             foreach ($documentNodesToDelete->getQuery()->iterate(null, Query::HYDRATE_SCALAR) as $result) {
@@ -633,13 +633,13 @@ class NodeCommandController extends CommandController
      *
      * @param string $title The node title (the node name will be derived from it)
      * @param string $path The (folder) path, relative to the current site root
-     * @param string $type Node Type, defaults to TYPO3.Neos.NodeTypes:Page
+     * @param string $type Node Type, defaults to Neos.NodeTypes:Page
      * @param string $uuid UUID of the new node, e.g. 22f90a17-9adc-2462-2971-bdb5eaf170b7
      */
     public function createCommand($title, $path, $type = null, $uuid = null)
     {
         $path = $this->getPath($path);
-        $nodeType = $this->nodeTypeManager->getNodeType($type ? $type : 'TYPO3.Neos.NodeTypes:Page');
+        $nodeType = $this->nodeTypeManager->getNodeType($type ? $type : 'Neos.NodeTypes:Page');
 
         $folderNode = $this->context->getNode($path);
 
@@ -667,7 +667,7 @@ class NodeCommandController extends CommandController
     public function repairCommand($nodeType = '', $dryRun = false, $cleanup = false)
     {
         /** @var NodeCommandControllerPlugin $plugin */
-        $plugin = $this->objectManager->get('TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin');
+        $plugin = $this->objectManager->get('Neos\ContentRepository\Command\NodeCommandControllerPlugin');
         $plugin->invokeSubCommand('repair', $this->output,
             $nodeType ? $this->nodeTypeManager->getNodeType($nodeType) : null,
             'live', $dryRun, $cleanup);
@@ -810,7 +810,7 @@ class NodeCommandController extends CommandController
         $migration = $this->objectManager->get($class);
 
         if (!$migration instanceof AbstractTransformation) {
-            $this->outputLine('ERROR: PHP-Class %s must be an instance of \TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation.',
+            $this->outputLine('ERROR: PHP-Class %s must be an instance of \Neos\ContentRepository\Migration\Transformations\AbstractTransformation.',
                 [$class]);
             $this->quit(1);
         }
