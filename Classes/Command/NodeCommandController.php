@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Object\ObjectManagerInterface;
+use TYPO3\Flow\Persistence\Doctrine\Exception\DatabaseException;
 use TYPO3\Media\Domain\Model\Asset;
 use TYPO3\Neos\Domain\Model\Site;
 use TYPO3\TYPO3CR\Command\NodeCommandControllerPlugin;
@@ -23,6 +24,9 @@ use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\Context;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 use TYPO3\Flow\Cli\CommandController;
+use TYPO3\TYPO3CR\Migration\Domain\Model\MigrationConfiguration;
+use TYPO3\TYPO3CR\Migration\Domain\Model\MigrationStatus;
+use TYPO3\TYPO3CR\Migration\Exception\MigrationException;
 use TYPO3\TYPO3CR\Migration\Transformations\AbstractTransformation;
 
 /**
@@ -835,6 +839,126 @@ class NodeCommandController extends CommandController
         }
         $this->output->progressFinish();
         $this->output->outputLine('%d record(s) processed.', [$numProcessed]);
+    }
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\TYPO3CR\Migration\Domain\Factory\MigrationFactory
+     */
+    protected $migrationFactory;
+
+    /**
+     * Helper to output comments and warnings for the given configuration.
+     *
+     * @param \TYPO3\TYPO3CR\Migration\Domain\Model\MigrationConfiguration $migrationConfiguration
+     * @return void
+     */
+    protected function outputCommentsAndWarnings(MigrationConfiguration $migrationConfiguration)
+    {
+        if ($migrationConfiguration->hasComments()) {
+            $this->outputLine();
+            $this->outputLine('<b>Comments</b>');
+            $this->outputFormatted($migrationConfiguration->getComments(), array(), 2);
+        }
+
+        if ($migrationConfiguration->hasWarnings()) {
+            $this->outputLine();
+            $this->outputLine('<b><u>Warnings</u></b>');
+            $this->outputFormatted($migrationConfiguration->getWarnings(), array(), 2);
+        }
+    }
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\TYPO3CR\Migration\Service\NodeFilter
+     */
+    protected $nodeFilterService;
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\TYPO3CR\Migration\Service\NodeTransformation
+     */
+    protected $nodeTransformationService;
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\TYPO3CR\Migration\Domain\Repository\MigrationStatusRepository
+     */
+    protected $migrationStatusRepository;
+
+    /**
+     * Do the configured migrations in the given migration.
+     *
+     * This is an alternative to the typo3cr:node:migrate command, designed for scalability and performance
+     * when dealing with big sites.
+     *
+     * By default the up direction is applied, using the direction parameter this can
+     * be changed.
+     *
+     * Important Note: this implementation needs a NodeType filter, which is mandatory
+     *
+     * @param string $version The version of the migration configuration you want to use.
+     * @param string $type NodeType, e.g. VENDOR.Site:MyNodeType
+     * @param boolean $confirmation Confirm application of this migration, only needed if the given migration contains
+     *     any warnings.
+     * @param string $direction The direction to work in, MigrationStatus::DIRECTION_UP or
+     *     MigrationStatus::DIRECTION_DOWN
+     *
+     * @return void
+     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @throws \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @throws \Exception
+     */
+    public function migrateCommand($version, $type = null, $confirmation = false, $direction = MigrationStatus::DIRECTION_UP)
+    {
+        try {
+            $migrationConfiguration = $direction === MigrationStatus::DIRECTION_UP ?
+                $this->migrationFactory->getMigrationForVersion($version)->getUpConfiguration() :
+                $this->migrationFactory->getMigrationForVersion($version)->getDownConfiguration();
+
+            $this->outputCommentsAndWarnings($migrationConfiguration);
+            if ($migrationConfiguration->hasWarnings() && $confirmation === false) {
+                $this->outputLine();
+                $this->outputLine('Migration has warnings. You need to confirm execution by adding the "--confirmation TRUE" option to the command.');
+                $this->quit(1);
+            }
+
+            $nodeQuery = new NodeQuery($type, null);
+            $numProcessed = 0;
+            $this->output->progressStart($nodeQuery->getCount());
+            $nodeQuery->setOrderBy('lastModificationDateTime', 'DESC');
+            foreach ($nodeQuery->getQuery()->iterate(null, Query::HYDRATE_OBJECT) as $res) {
+                /** @var NodeData $nodeData */
+                $nodeData = $res[0];
+
+                foreach ($migrationConfiguration->getMigration() as $migrationDescription) {
+                    if ($this->nodeFilterService->matchFilters($nodeData, $migrationDescription['filters'])) {
+                        $this->nodeTransformationService->execute($nodeData, $migrationDescription['transformations']);
+                        $numProcessed++;
+                        if (!$this->nodeDataRepository->isInRemovedNodes($nodeData) && !$nodeData->isRemoved()) {
+                            $this->nodeDataRepository->update($nodeData);
+                        }
+                    }
+                }
+
+                $this->output->progressAdvance();
+            }
+            $this->output->progressFinish();
+            $this->output->outputLine('%d record(s) processed.', [$numProcessed]);
+
+            $migrationStatus = new MigrationStatus($version, $direction, new \DateTime());
+            $this->migrationStatusRepository->add($migrationStatus);
+            $this->outputLine();
+            $this->outputLine('Successfully applied migration.');
+        } catch (MigrationException $e) {
+            $this->outputLine();
+            $this->outputLine('Error: ' . $e->getMessage());
+            $this->quit(1);
+        } catch (DatabaseException $exception) {
+            $this->outputLine();
+            $this->outputLine('An exception occurred during the migration, run a ./flow doctrine:migrate and run the migration again.');
+            $this->quit(1);
+        }
     }
 
     /**
